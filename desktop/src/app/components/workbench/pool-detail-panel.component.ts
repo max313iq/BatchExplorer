@@ -158,7 +158,7 @@ export class PoolDetailPanelComponent {
     }
 
     public async loadNodes(force: boolean) {
-        if (!this.account || !this.poolId || this.actionInProgress || this.loadingNodes) {
+        if (!this.account || !this.poolId || this.loadingNodes) {
             return;
         }
         if (this._selectionPoolId !== this.poolId) {

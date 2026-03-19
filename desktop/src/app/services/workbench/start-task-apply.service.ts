@@ -229,7 +229,7 @@ export class StartTaskApplyService {
     private _validateRequest(request: StartTaskApplyRequest, targets: StartTaskApplyTarget[]): string[] {
         const errors: string[] = [];
         const commandLine = request.startTask && request.startTask.commandLine;
-        if (!commandLine || commandLine.trim().length === 0) {
+        if (typeof commandLine !== "string" || commandLine.trim().length === 0) {
             errors.push("Start task commandLine is required.");
         }
         if (!request.confirmationAccepted && !request.dryRun) {

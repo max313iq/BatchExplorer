@@ -5,14 +5,13 @@
             <p class="subtitle">Cross-account pool visibility with safe refresh controls.</p>
         </div>
         <div class="header-actions">
-            <bl-button
-                color="light"
+            <button mat-stroked-button type="button"
                 [disabled]="isRefreshing || !isFeatureEnabled"
-                [action]="refresh"
+                (click)="refresh()"
                 title="Refresh pools">
                 <i class="fa fa-refresh" aria-hidden="true"></i>
                 Refresh
-            </bl-button>
+            </button>
             <label class="auto-refresh-toggle">
                 <input type="checkbox" [(ngModel)]="autoRefreshEnabled" (change)="onAutoRefreshChanged()" [disabled]="!isFeatureEnabled">
                 Auto refresh
@@ -64,7 +63,9 @@
 
         <div class="selection-bar">
             <span>{{selectedCount}} selected</span>
-            <bl-button color="light" [disabled]="selection.isEmpty()" [action]="clearSelection">Clear selection</bl-button>
+            <button mat-stroked-button type="button" [disabled]="selection.isEmpty()" (click)="clearSelection()">
+                Clear selection
+            </button>
             <button mat-stroked-button type="button" (click)="bulkResizeSelected()" [disabled]="selectedCount === 0">
                 Resize selected
             </button>

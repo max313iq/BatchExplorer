@@ -2,7 +2,7 @@ import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { HttpCode } from "@batch-flask/core";
 import { log } from "@batch-flask/utils";
-import { ArmBatchAccount, BatchAccount, LocalBatchAccount, PoolAllocationState } from "app/models";
+import { ArmBatchAccount, BatchAccount, PoolAllocationState } from "app/models";
 import { AzureBatchHttpService, BatchListResponse } from "app/services/azure-batch/core";
 import { ArmBatchAccountService, BatchAccountService, LocalBatchAccountService } from "app/services/batch-account";
 import { SubscriptionService } from "app/services/subscription";
