@@ -1,0 +1,18 @@
+2026-03-19T22:12:44.083080Z  WARN codex_core::shell_snapshot: Failed to create shell snapshot for powershell: Shell snapshot not supported yet for PowerShell
+OpenAI Codex v0.115.0-alpha.27 (research preview)
+--------
+workdir: C:\Users\m4x\.codex\worktrees\f0ee\BatchExplorer
+model: gpt-5.3-codex
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019d0828-7bac-71a1-9d35-a9634ba8dc37
+--------
+user
+Inspect util/* and summarize each utility package role, expected consumers, and notable scripts/tooling entry points. No file edits.
+mcp: playwright starting
+mcp: linear starting
+mcp: figma starting
+mcp: notion starting

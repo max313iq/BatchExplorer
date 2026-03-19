@@ -1,0 +1,12 @@
+.codex-subagents
+.github
+.vscode
+.vsts
+desktop
+docs
+electron-auto-app
+eng
+Localize
+packages
+util
+web
