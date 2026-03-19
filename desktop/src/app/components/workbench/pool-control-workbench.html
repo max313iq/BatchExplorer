@@ -1,0 +1,132 @@
+<div class="pool-control-workbench">
+    <div class="header">
+        <div>
+            <h2>Pool Control Workbench</h2>
+            <p class="subtitle">Cross-account pool visibility with safe refresh controls.</p>
+        </div>
+        <div class="header-actions">
+            <bl-button
+                color="light"
+                [disabled]="isRefreshing || !isFeatureEnabled"
+                [action]="refresh"
+                title="Refresh pools">
+                <i class="fa fa-refresh" aria-hidden="true"></i>
+                Refresh
+            </bl-button>
+            <label class="auto-refresh-toggle">
+                <input type="checkbox" [(ngModel)]="autoRefreshEnabled" (change)="onAutoRefreshChanged()" [disabled]="!isFeatureEnabled">
+                Auto refresh
+            </label>
+            <span class="refresh-interval">Every {{autoRefreshIntervalSeconds}}s</span>
+        </div>
+    </div>
+
+    <div class="feature-off" *ngIf="!isFeatureEnabled">
+        Pool Control Workbench is disabled. Enable <code>features.poolControlWorkbench</code> in user settings.
+    </div>
+
+    <div *ngIf="isFeatureEnabled">
+        <div class="filters">
+            <label>
+                Subscription
+                <select [(ngModel)]="subscriptionFilter" (ngModelChange)="applyFilters()">
+                    <option value="">All</option>
+                    <option *ngFor="let subscription of subscriptionOptions" [value]="subscription">{{subscription}}</option>
+                </select>
+            </label>
+
+            <label>
+                Account
+                <select [(ngModel)]="accountFilter" (ngModelChange)="applyFilters()">
+                    <option value="">All</option>
+                    <option *ngFor="let account of accountOptions" [value]="account">{{account}}</option>
+                </select>
+            </label>
+
+            <label>
+                Region
+                <select [(ngModel)]="regionFilter" (ngModelChange)="applyFilters()">
+                    <option value="">All</option>
+                    <option *ngFor="let region of regionOptions" [value]="region">{{region}}</option>
+                </select>
+            </label>
+
+            <label class="search">
+                Search
+                <input type="text" [(ngModel)]="searchFilter" (ngModelChange)="applyFilters()" placeholder="pool id, account, region">
+            </label>
+
+            <label class="alerts-only">
+                <input type="checkbox" [(ngModel)]="onlyAlerts" (change)="applyFilters()">
+                Alerts only
+            </label>
+        </div>
+
+        <div class="selection-bar">
+            <span>{{selectedCount}} selected</span>
+            <bl-button color="light" [disabled]="selection.isEmpty()" [action]="clearSelection">Clear selection</bl-button>
+            <span class="placeholder-actions">Bulk actions are placeholders in this slice.</span>
+        </div>
+
+        <bl-table
+            [config]="tableConfig"
+            [data]="displayedRows"
+            [(activeItem)]="activeItem"
+            [(selection)]="selection">
+
+            <bl-column name="subscriptionId">
+                <div *blHeadCellDef>Subscription</div>
+                <div *blCellDef="let row">{{row.subscriptionId}}</div>
+            </bl-column>
+
+            <bl-column name="accountName">
+                <div *blHeadCellDef>Account</div>
+                <div *blCellDef="let row">{{row.accountName}}</div>
+            </bl-column>
+
+            <bl-column name="location">
+                <div *blHeadCellDef>Region</div>
+                <div *blCellDef="let row">{{row.location}}</div>
+            </bl-column>
+
+            <bl-column name="poolId">
+                <div *blHeadCellDef>Pool</div>
+                <div *blCellDef="let row">{{row.poolId}}</div>
+            </bl-column>
+
+            <bl-column name="allocationState">
+                <div *blHeadCellDef>Allocation</div>
+                <div *blCellDef="let row">{{row.allocationState}}</div>
+            </bl-column>
+
+            <bl-column name="nodeCounts">
+                <div *blHeadCellDef>Node counts</div>
+                <div *blCellDef="let row">
+                    Idle: {{row.nodeCountsByState.idle}}
+                    Running: {{row.nodeCountsByState.running}}
+                    Starting: {{row.nodeCountsByState.starting}}
+                    StartTaskFailed: {{row.nodeCountsByState.startTaskFailed}}
+                    Unusable: {{row.nodeCountsByState.unusable}}
+                </div>
+            </bl-column>
+
+            <bl-column name="alerts">
+                <div *blHeadCellDef>Alerts</div>
+                <div *blCellDef="let row">{{row.alerts.length > 0 ? row.alerts.join(', ') : 'None'}}</div>
+            </bl-column>
+
+            <bl-column name="actions">
+                <div *blHeadCellDef>Actions</div>
+                <div *blCellDef="let row">
+                    <bl-button color="light" [disabled]="true" title="Placeholder actions only in this slice">
+                        Actions
+                    </bl-button>
+                </div>
+            </bl-column>
+        </bl-table>
+
+        <div class="status-message" *ngIf="isRefreshing">{{statusMessage}}</div>
+        <div class="status-message" *ngIf="!isRefreshing && statusMessage">{{statusMessage}}</div>
+        <div class="error-message" *ngIf="refreshError">{{refreshError}}</div>
+    </div>
+</div>

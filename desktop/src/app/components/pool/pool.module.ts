@@ -19,6 +19,7 @@ import { PoolGraphsModule } from "app/components/pool/graphs";
 import { PoolHomeComponent } from "app/components/pool/home/pool-home.component";
 import { StartTaskModule } from "app/components/pool/start-task";
 import { TaskBaseModule } from "app/components/task/base";
+import { PoolControlWorkbenchComponent } from "app/components/workbench";
 import { EditPoolModule } from "./action/edit/edit-pool.module";
 import { NetworkConfigurationModule } from "./network-configuration";
 import { PoolRoutingModule } from "./pool-routing.module";
@@ -30,6 +31,7 @@ const components = [
     PoolAdvancedFilterComponent,
     PoolCreateBasicDialogComponent,
     PoolHomeComponent,
+    PoolControlWorkbenchComponent,
     PoolListComponent,
     PoolScalePickerComponent,
     VmSizePickerComponent,
