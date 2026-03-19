@@ -1,8 +1,0 @@
-form-footer:
-  buttons:
-    jsonEditor: Switch to JSON editor
-    normalForm: Switch to classic form
-    cancel: Cancel
-    save: Save
-    andClose: "{action} and Close"
-    select: Select

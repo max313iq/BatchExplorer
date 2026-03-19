@@ -1,3 +1,0 @@
-path_classifiers:
-  generated:
-    - "web/lib-umd/*.js"

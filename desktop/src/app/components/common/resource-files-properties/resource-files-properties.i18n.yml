@@ -1,5 +1,0 @@
-resource-files-properties:
-  httpUrl: Http url
-  filePath: Node file path
-  fileMode: File mode
-  none: No resource files

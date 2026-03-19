@@ -1,5 +1,0 @@
-task-node-info:
-  navigateToPool: Navigate to pool
-  navigateToNode: Navigate to compute node
-  poolNotFound: Pool doesn't exist anymore
-  nodeNotFound: Compute node doesn't exist anymore

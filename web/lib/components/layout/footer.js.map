@@ -1,0 +1,1 @@
+{"version":3,"file":"footer.js","sourceRoot":"","sources":["../../../src/components/layout/footer.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAE/B,MAAM,CAAC,MAAM,MAAM,GAAa,GAAG,EAAE;IACjC,OAAO,CACH,gCACI,KAAK,EAAE;YACH,OAAO,EAAE,MAAM;YACf,SAAS,EAAE,iBAAiB;YAC5B,SAAS,EAAE,OAAO;SACrB,4BAGI,CACZ,CAAC;AACN,CAAC,CAAC"}
