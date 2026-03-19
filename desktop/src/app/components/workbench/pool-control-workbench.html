@@ -65,7 +65,15 @@
         <div class="selection-bar">
             <span>{{selectedCount}} selected</span>
             <bl-button color="light" [disabled]="selection.isEmpty()" [action]="clearSelection">Clear selection</bl-button>
-            <span class="placeholder-actions">Bulk actions are placeholders in this slice.</span>
+            <button mat-stroked-button type="button" (click)="bulkResizeSelected()" [disabled]="selectedCount === 0">
+                Resize selected
+            </button>
+            <button mat-stroked-button type="button" (click)="cleanupBootstrapPools()" [disabled]="displayedRows.length === 0">
+                Cleanup bootstrap pools
+            </button>
+            <button mat-stroked-button type="button" (click)="exportSelectedAsJson()" [disabled]="selectedCount === 0">
+                Export selected JSON
+            </button>
         </div>
 
         <bl-table
@@ -118,15 +126,54 @@
             <bl-column name="actions">
                 <div *blHeadCellDef>Actions</div>
                 <div *blCellDef="let row">
-                    <bl-button color="light" [disabled]="true" title="Placeholder actions only in this slice">
-                        Actions
-                    </bl-button>
+                    <button mat-button type="button" (click)="resizeRow(row)" [disabled]="isRowBusy(row)">Resize</button>
+                    <button mat-button type="button" (click)="stopResizeRow(row)" [disabled]="isRowBusy(row)">Stop</button>
+                    <button mat-button type="button" (click)="deleteRow(row)" [disabled]="isRowBusy(row)">Delete</button>
+                    <button mat-button type="button" (click)="exportRow(row)" [disabled]="isRowBusy(row)">Export</button>
                 </div>
             </bl-column>
         </bl-table>
 
-        <div class="status-message" *ngIf="isRefreshing">{{statusMessage}}</div>
-        <div class="status-message" *ngIf="!isRefreshing && statusMessage">{{statusMessage}}</div>
+        <div class="status-message" *ngIf="statusMessage">{{statusMessage}}</div>
+        <div class="status-message" *ngIf="actionMessage">{{actionMessage}}</div>
+        <div class="status-message" *ngIf="bulkSummary">{{bulkSummary}}</div>
         <div class="error-message" *ngIf="refreshError">{{refreshError}}</div>
+        <div class="error-message" *ngIf="actionError">{{actionError}}</div>
+        <div class="export-json" *ngIf="exportedJson">
+            <h3>Export JSON</h3>
+            <pre>{{exportedJson}}</pre>
+        </div>
+
+        <div class="start-task-section">
+            <h3>Start task rollout</h3>
+            <bl-start-task-editor
+                [currentTarget]="currentTarget"
+                [selectedTargets]="selectedTargets"
+                [allTargets]="allTargets"
+                (previewRequested)="handleStartTaskPreview($event)"
+                (applyRequested)="handleStartTaskApply($event)">
+            </bl-start-task-editor>
+
+            <pre class="start-task-preview" *ngIf="startTaskPreviewText">{{startTaskPreviewText}}</pre>
+            <div class="status-message" *ngIf="startTaskRunning && startTaskProgress">
+                Applying start task: {{startTaskProgress.completedTargets}} / {{startTaskProgress.totalTargets}}
+            </div>
+            <div class="error-message" *ngIf="startTaskError">{{startTaskError}}</div>
+            <div class="status-message" *ngIf="startTaskProgress?.summary">
+                Start task summary:
+                {{startTaskProgress.summary.succeeded}} succeeded,
+                {{startTaskProgress.summary.failed}} failed,
+                {{startTaskProgress.summary.skipped}} skipped.
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <h3>Pool detail</h3>
+            <bl-pool-detail-panel
+                [account]="selectedAccount"
+                [poolId]="activeItem?.poolId"
+                [summary]="selectedSummary">
+            </bl-pool-detail-panel>
+        </div>
     </div>
 </div>

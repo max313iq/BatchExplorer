@@ -8,16 +8,9 @@ import { ArmBatchAccountService, BatchAccountService, LocalBatchAccountService }
 import { SubscriptionService } from "app/services/subscription";
 import { from, Observable, of } from "rxjs";
 import { catchError, concatMap, expand, map, reduce, switchMap, take } from "rxjs/operators";
+import { WorkbenchAccountRef, WorkbenchPoolRow } from "./workbench-types";
 
 export type WorkbenchErrorClass = "quota" | "transient" | "fatal";
-
-export interface WorkbenchAccountRef {
-    subscriptionId: string | null;
-    accountId: string;
-    accountName: string;
-    location: string | null;
-    endpoint: string;
-}
 
 export interface WorkbenchNodeCountsByState {
     creating: number;
@@ -34,17 +27,6 @@ export interface WorkbenchNodeCountsByState {
     unknown: number;
     unusable: number;
     waitingForStartTask: number;
-}
-
-export interface WorkbenchPoolRow {
-    subscriptionId: string | null;
-    accountId: string;
-    accountName: string;
-    location: string | null;
-    poolId: string;
-    allocationState: string | null;
-    nodeCountsByState: WorkbenchNodeCountsByState;
-    alerts: string[];
 }
 
 export interface WorkbenchClassifiedError {
@@ -140,12 +122,16 @@ export class WorkbenchDiscoveryService {
                                 return poolSummaries.map((pool) => {
                                     const nodeCounts = countsByPool.get(pool.id) || this._emptyNodeCounts();
                                     return {
-                                        subscriptionId: account instanceof ArmBatchAccount ? account.subscriptionId : null,
+                                        subscriptionId: account instanceof ArmBatchAccount
+                                            ? account.subscriptionId || "unknown-subscription"
+                                            : "local",
                                         accountId: account.id,
                                         accountName: account.displayName || account.name,
-                                        location: account instanceof ArmBatchAccount ? account.location : null,
+                                        location: account instanceof ArmBatchAccount
+                                            ? account.location || "unknown-region"
+                                            : "local",
                                         poolId: pool.id,
-                                        allocationState: pool.allocationState || null,
+                                        allocationState: pool.allocationState || "unknown",
                                         nodeCountsByState: nodeCounts,
                                         alerts: this._buildAlerts(pool, nodeCounts, quota),
                                     };
@@ -293,10 +279,14 @@ export class WorkbenchDiscoveryService {
 
     private _toAccountRef(account: BatchAccount): WorkbenchAccountRef {
         return {
-            subscriptionId: account instanceof ArmBatchAccount ? account.subscriptionId : null,
+            subscriptionId: account instanceof ArmBatchAccount
+                ? account.subscriptionId || "unknown-subscription"
+                : "local",
             accountId: account.id,
             accountName: account.displayName || account.name,
-            location: account instanceof ArmBatchAccount ? account.location : null,
+            location: account instanceof ArmBatchAccount
+                ? account.location || "unknown-region"
+                : "local",
             endpoint: account.url,
         };
     }
