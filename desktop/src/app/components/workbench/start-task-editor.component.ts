@@ -6,6 +6,7 @@ import {
     StartTaskApplyScope,
     StartTaskApplyTarget,
 } from "app/services/workbench/start-task-apply.service";
+import "./start-task-editor.scss";
 
 interface StartTaskEditorForm {
     scope: StartTaskApplyScope;
@@ -18,7 +19,6 @@ interface StartTaskEditorForm {
 @Component({
     selector: "bl-start-task-editor",
     templateUrl: "start-task-editor.html",
-    styleUrls: ["start-task-editor.scss"],
 })
 export class StartTaskEditorComponent {
     @Input() public currentTarget: StartTaskApplyTarget | null = null;

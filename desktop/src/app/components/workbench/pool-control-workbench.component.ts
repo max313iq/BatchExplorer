@@ -17,6 +17,7 @@ import { BEUserConfiguration } from "common";
 import { Subject, Subscription, timer } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { PoolDetailSummary } from "./pool-detail-panel.component";
+import "./pool-control-workbench.scss";
 
 interface WorkbenchPoolTableRow extends WorkbenchPoolRow {
     id: string;
@@ -25,7 +26,6 @@ interface WorkbenchPoolTableRow extends WorkbenchPoolRow {
 @Component({
     selector: "bl-pool-control-workbench",
     templateUrl: "pool-control-workbench.html",
-    styleUrls: ["pool-control-workbench.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PoolControlWorkbenchComponent implements OnInit, OnDestroy {

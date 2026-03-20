@@ -13,6 +13,7 @@ import { WorkbenchAccountRef, WorkbenchPoolRow } from "./workbench-types";
 export type WorkbenchErrorClass = "quota" | "transient" | "fatal";
 
 export interface WorkbenchNodeCountsByState {
+    [state: string]: number;
     creating: number;
     idle: number;
     leavingPool: number;
@@ -76,7 +77,10 @@ export class WorkbenchDiscoveryService {
             switchMap((account) => this._listPoolsForAccount(account)),
             catchError((error) => {
                 const classified = this.classifyError(error);
-                log.error(`[WorkbenchDiscovery] listPools failed for ${accountRef.accountId}`, classified, error);
+                log.error(
+                    `[WorkbenchDiscovery] listPools failed for ${accountRef.accountId}: ${classified.category} - ${classified.message}`,
+                    error,
+                );
                 return of([]);
             }),
         );
@@ -90,7 +94,10 @@ export class WorkbenchDiscoveryService {
             }),
             catchError((error) => {
                 const classified = this.classifyError(error);
-                log.error(`[WorkbenchDiscovery] getPoolNodeCounts failed for ${accountRef.accountId}/${poolId}`, classified, error);
+                log.error(
+                    `[WorkbenchDiscovery] getPoolNodeCounts failed for ${accountRef.accountId}/${poolId}: ${classified.category} - ${classified.message}`,
+                    error,
+                );
                 return of(this._emptyNodeCounts());
             }),
         );
@@ -196,7 +203,10 @@ export class WorkbenchDiscoveryService {
             }),
             catchError((error) => {
                 const classified = this.classifyError(error);
-                log.error(`[WorkbenchDiscovery] getAllPoolNodeCounts failed for ${account.id}`, classified, error);
+                log.error(
+                    `[WorkbenchDiscovery] getAllPoolNodeCounts failed for ${account.id}: ${classified.category} - ${classified.message}`,
+                    error,
+                );
                 return of(new Map<string, WorkbenchNodeCountsByState>());
             }),
         );
@@ -212,8 +222,10 @@ export class WorkbenchDiscoveryService {
                             map((accounts) => accounts.toArray()),
                             catchError((error) => {
                                 const classified = this.classifyError(error);
-                                log.error(`[WorkbenchDiscovery] list ARM accounts failed for ${subscription.subscriptionId}`,
-                                    classified, error);
+                                log.error(
+                                    `[WorkbenchDiscovery] list ARM accounts failed for ${subscription.subscriptionId}: ${classified.category} - ${classified.message}`,
+                                    error,
+                                );
                                 return of([]);
                             }),
                         );
@@ -231,14 +243,20 @@ export class WorkbenchDiscoveryService {
                     }),
                     catchError((error) => {
                         const classified = this.classifyError(error);
-                        log.error("[WorkbenchDiscovery] loading local accounts failed", classified, error);
+                        log.error(
+                            `[WorkbenchDiscovery] loading local accounts failed: ${classified.category} - ${classified.message}`,
+                            error,
+                        );
                         return of(armAccounts);
                     }),
                 );
             }),
             catchError((error) => {
                 const classified = this.classifyError(error);
-                log.error("[WorkbenchDiscovery] loading accounts failed", classified, error);
+                log.error(
+                    `[WorkbenchDiscovery] loading accounts failed: ${classified.category} - ${classified.message}`,
+                    error,
+                );
                 return of([]);
             }),
         );

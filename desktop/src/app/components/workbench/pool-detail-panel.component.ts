@@ -6,6 +6,7 @@ import {
     DisableSchedulingOption,
     NodeActionResult,
 } from "app/services/workbench/batch-node-actions.service";
+import "./pool-detail-panel.scss";
 
 export interface PoolDetailSummary {
     accountName?: string;
@@ -18,7 +19,6 @@ export interface PoolDetailSummary {
 @Component({
     selector: "bl-pool-detail-panel",
     templateUrl: "pool-detail-panel.html",
-    styleUrls: ["pool-detail-panel.scss"],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PoolDetailPanelComponent {
